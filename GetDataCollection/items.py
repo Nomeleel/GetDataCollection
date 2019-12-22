@@ -15,6 +15,8 @@ class GetdatacollectionItem(Item):
 
 class AppItem(Item):
     id = Field()
+    name = Field()
+    description = Field()
     packageName = Field()
     bundleId = Field()
-    #TODO add field
+    iconUrl = Field()

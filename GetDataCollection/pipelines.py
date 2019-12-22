@@ -16,23 +16,25 @@ class GetdatacollectionPipeline(object):
         response = request.urlopen(url_format.format(package_name))
         response_map = json.loads(response.read())
         
+        # TODO bundle must be 458318329, current is http://itunes.apple.com/cn/app/id458318329?mt=8
         return response_map['data']['appExt']['iosUrl']
 
     def process_item(self, item, spider):
         item['bundleId'] = self.get_bundle_id(item['packageName'])
 
-        itemLine = ('' if self.appCount == 0 else ',') + '\n' + '        ' + json.dumps(dict(item))
+        itemLine = ('' if self.appCount == 0 else ',\n') + '        ' + json.dumps(dict(item))
         self.file.write(itemLine)
         self.appCount += 1
         return item
 
     def open_spider(self, spider):
-        self.file = open('items.json', 'w')
+        self.file = open('wangcard.json', 'w')
         self.file.write('{\n')
         self.file.write('    "appList": [\n')
 
     def close_spider(self, spider):
-        self.file.write('\n    ]\n')
+        self.file.write('\n    ],\n')
+        self.file.write('    "appCount": ' + str(self.appCount) + '\n')
         self.file.write('}')
         self.file.close()
 
