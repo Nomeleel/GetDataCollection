@@ -19,8 +19,10 @@ class GetdatacollectionPipeline(object):
         response = request.urlopen(url_format.format(package_name))
         response_map = json.loads(response.read())
         
-        # TODO bundle must be 458318329, current is http://itunes.apple.com/cn/app/id458318329?mt=8
-        return response_map['data']['appExt']['iosUrl']
+        iosUrl = response_map['data']['appExt']['iosUrl']
+        bundleIdIndex = iosUrl.index('id') + len('id')
+        # 9 = len(bundleId)
+        return iosUrl[bundleIdIndex : bundleIdIndex + 9]
 
     def process_item(self, item, spider):
         # TODO Deduplication
