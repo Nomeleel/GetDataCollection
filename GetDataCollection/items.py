@@ -20,3 +20,4 @@ class AppItem(Item):
     packageName = Field()
     bundleId = Field()
     iconUrl = Field()
+    urlScheme = Field()
