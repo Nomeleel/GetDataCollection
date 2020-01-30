@@ -28,18 +28,21 @@ class GetdatacollectionPipeline(object):
             return iosUrl[bundle_id_index : bundle_id_index + 9]
 
     def get_url_scheme(self, bundle_id):
-        if not bundle_id :
-            return self.bundleId_urlScheme_map[bundle_id]
+        if bundle_id :
+            return self.bundleId_urlScheme_map[bundle_id] if bundle_id in self.bundleId_urlScheme_map else ''
 
     def process_item(self, item, spider):
         if item['id'] in self.app_ids:
             raise DropItem("Duplicate item found: %s" % item)
         else:
             item['bundleId'] = self.get_bundle_id(item['packageName'])
-            item['urlScheme'] = self.get_url_scheme(item['urlScheme'])
+            item['urlScheme'] = self.get_url_scheme(item['bundleId'])
 
             item_line = ('' if len(self.app_ids) == 0 else ',\n') + '        ' + json.dumps(dict(item))
             self.file.write(item_line)
+
+            self.app_ids.add(item['id'])
+
             return item
 
     def init_bundle_id_url_scheme_map(self):
