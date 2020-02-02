@@ -7,13 +7,13 @@ class WangCardSpider(scrapy.Spider):
     name = "wang_card"
     allowed_domains = ["pngweb.3g.qq.com", ""]
     url_format = "https://pngweb.3g.qq.com/KingSimCardFreeFlowAppListGet?imei=&guid=&classId=0&startIndex={0}&pageSize={1}"
-    start_urls = [url_format.format(0, 3)]
+    start_urls = [url_format.format(0, 50)]
 
     def parse(self, response):
 
         response_map = json.loads(response.body)
 
-        if response_map['isLastBatch'] :
+        if not response_map['isLastBatch'] :
             arg_map = url_parse.parse_qs(response.url)
             start_index = int(arg_map['startIndex'][0])
             page_size = int(arg_map['pageSize'][0])

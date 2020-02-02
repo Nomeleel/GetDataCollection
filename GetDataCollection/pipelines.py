@@ -29,7 +29,7 @@ class GetdatacollectionPipeline(object):
 
     def get_url_scheme(self, bundle_id):
         if bundle_id :
-            return self.bundleId_urlScheme_map[bundle_id] if bundle_id in self.bundleId_urlScheme_map else ''
+            return self.bundleId_urlScheme_map[bundle_id] if bundle_id in self.bundleId_urlScheme_map else None
 
     def process_item(self, item, spider):
         if item['id'] in self.app_ids:
