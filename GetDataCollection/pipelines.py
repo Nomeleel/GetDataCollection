@@ -25,11 +25,15 @@ class GetdatacollectionPipeline(object):
         if iosUrl:
             bundle_id_index = iosUrl.index('id') + len('id')
             # 9 = len(bundleId)
-            return iosUrl[bundle_id_index : bundle_id_index + 9]
+            bundle_id = iosUrl[bundle_id_index : bundle_id_index + 9]
+            return '' if bundle_id is None else bundle_id
+        return ''
 
     def get_url_scheme(self, bundle_id):
         if bundle_id :
-            return self.bundleId_urlScheme_map[bundle_id] if bundle_id in self.bundleId_urlScheme_map else None
+            return self.bundleId_urlScheme_map[bundle_id] if bundle_id in self.bundleId_urlScheme_map else ''
+        else :
+            return ''
 
     def process_item(self, item, spider):
         if item['id'] in self.app_ids:
